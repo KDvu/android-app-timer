@@ -10,8 +10,9 @@ import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ListView;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class SetTime extends AppCompatActivity {
 
     private String hour = String.format("%02d", 0);
     private String min = String.format("%02d", 0);
@@ -23,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
+
+        //Button
+        Button setTimeButton = new Button(this);
+        setTimeButton.setText("Set Time");
+        setTimeButton.setId(R.id.setTimeButton);
 
         //Items for ListViews + list adapators
         String[] hourList = new String[24];
@@ -86,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         displaySec.setId(R.id.displaySec);
 
         //Set size of widgets
+        RelativeLayout.LayoutParams setTimeButtonDetails = warpContent();
+
         RelativeLayout.LayoutParams topHeadingDetails = warpContent();
         RelativeLayout.LayoutParams hourHeadingDetails = warpContent();
         RelativeLayout.LayoutParams minHeadingDetails = warpContent();
@@ -135,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
         displaySecDetails.addRule(RelativeLayout.BELOW, secView.getId());
         displaySecDetails.addRule(RelativeLayout.RIGHT_OF, displayMin.getId());
 
+        setTimeButtonDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        setTimeButtonDetails.addRule(RelativeLayout.BELOW, displayMin.getId());
+        setTimeButtonDetails.setMargins(0,50,0,0);
+
         //Event Handlers
         hourView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
@@ -169,10 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-
-
-
-
         //Add views
         rLayout.addView(topHeading, topHeadingDetails);
         rLayout.addView(minHeading, minHeadingDetails);
@@ -186,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
         rLayout.addView(displayMin, displayMinDetails);
         rLayout.addView(displayHour, displayHourDetails);
         rLayout.addView(displaySec, displaySecDetails);
+
+        rLayout.addView(setTimeButton, setTimeButtonDetails);
 
         setContentView(rLayout);
     }
