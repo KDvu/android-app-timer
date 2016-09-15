@@ -23,15 +23,15 @@ public class MainActivity extends AppCompatActivity {
         String[] minList = new String[60];
         String[] secList = new String[60];
 
-        fillArray(hourList, 0); //From 0 to 23
-        fillArray(minList, 1); //From 1 to 59
-        fillArray(secList, 1); //From 1 to 59
+        fillArray(hourList); //From 0 to 23
+        fillArray(minList); //From 1 to 59
+        fillArray(secList); //From 1 to 59
 
         ListAdapter listA1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
-        ListAdapter listA2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
-        ListAdapter listA3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
+        ListAdapter listA2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, minList);
+        ListAdapter listA3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, secList);
 
-        //ListViews + setting adapters
+        //ListViews + setting adapters + ids
         ListView hourView = new ListView(this);
         ListView minView = new ListView(this);
         ListView secView = new ListView(this);
@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         hourView.setAdapter(listA1);
         minView.setAdapter(listA2);
         secView.setAdapter(listA3);
+
+        hourView.setId(R.id.hourView);
+        minView.setId(R.id.minView);
+        secView.setId(R.id.secView);
 
         //TextViews
         TextView topHeading = new TextView(this);
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         minHeading.setId(R.id.minHeading);
         secHeading.setId(R.id.secHeading);
 
-        //Set size of TextView
+        //Set size of widgets
         RelativeLayout.LayoutParams topHeadingDetails = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams hourHeadingDetails = new RelativeLayout.LayoutParams(
@@ -68,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams secHeadingDetails = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
+        RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
+        RelativeLayout.LayoutParams secViewDetails = new RelativeLayout.LayoutParams(100, 200);
 
         //Create rules for positioning
         topHeadingDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -85,16 +92,31 @@ public class MainActivity extends AppCompatActivity {
         secHeadingDetails.addRule(RelativeLayout.RIGHT_OF, minHeading.getId());
         secHeadingDetails.setMargins(0,0,0,20);
 
+        minViewDetails.addRule(RelativeLayout.BELOW, hourHeading.getId());
+        minViewDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        minViewDetails.setMargins(50,0,50,0);
+
+        hourViewDetails.addRule(RelativeLayout.BELOW, hourHeading.getId());
+        hourViewDetails.addRule(RelativeLayout.LEFT_OF, minView.getId());
+
+        secViewDetails.addRule(RelativeLayout.BELOW, secHeading.getId());
+        secViewDetails.addRule(RelativeLayout.RIGHT_OF, minView.getId());
+
+        //Add views
         rLayout.addView(topHeading, topHeadingDetails);
         rLayout.addView(minHeading, minHeadingDetails);
         rLayout.addView(hourHeading, hourHeadingDetails);
         rLayout.addView(secHeading, secHeadingDetails);
 
+        rLayout.addView(minView, minViewDetails);
+        rLayout.addView(hourView, hourViewDetails);
+        rLayout.addView(secView, secViewDetails);
+
         setContentView(rLayout);
     }
 
-    public void fillArray(String[] array, int num){
-        for(int i = num; i < array.length; i++){
+    public void fillArray(String[] array){
+        for(int i = 0; i < array.length; i++){
             array[i] = String.valueOf(i);
         }
     }
