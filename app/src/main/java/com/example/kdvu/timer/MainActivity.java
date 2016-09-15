@@ -11,6 +11,10 @@ import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String hour = String.format("%02d", 0);
+    private String min = String.format("%02d", 0);
+    private String sec = String.format("%02d", 0);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         minHeading.setText("Min");
         secHeading.setText("Sec");
 
-        displayHour.setText("Hour :");
-        displayMin.setText(" Min :");
-        displaySec.setText(" Sec");
+        displayHour.setText(hour + " :");
+        displayMin.setText(" " + min + " :");
+        displaySec.setText(" " + sec);
 
         displayHour.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
         displayMin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout.LayoutParams displayHourDetails = warpContent();
         RelativeLayout.LayoutParams displayMinDetails = warpContent();
         RelativeLayout.LayoutParams displaySecDetails = warpContent();
-        
+
         RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams secViewDetails = new RelativeLayout.LayoutParams(100, 200);
