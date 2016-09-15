@@ -3,6 +3,8 @@ package com.example.kdvu.timer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
@@ -54,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         TextView minHeading = new TextView(this);
         TextView secHeading = new TextView(this);
 
-        TextView displayHour = new TextView(this);
-        TextView displayMin = new TextView(this);
-        TextView displaySec = new TextView(this);
+        final TextView displayHour = new TextView(this);
+        final TextView displayMin = new TextView(this);
+        final TextView displaySec = new TextView(this);
 
         //Set TextView text
         topHeading.setText("Select Time");
@@ -132,6 +134,44 @@ public class MainActivity extends AppCompatActivity {
 
         displaySecDetails.addRule(RelativeLayout.BELOW, secView.getId());
         displaySecDetails.addRule(RelativeLayout.RIGHT_OF, displayMin.getId());
+
+        //Event Handlers
+        hourView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        hour = String.valueOf(parent.getItemAtPosition(position));
+                        hour = String.format("%02d", Integer.parseInt(hour));
+                        displayHour.setText(hour + " :");
+                    }
+                }
+        );
+
+        minView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        min = String.valueOf(parent.getItemAtPosition(position));
+                        min = String.format("%02d", Integer.parseInt(min));
+                        displayMin.setText(" " + min + " :");
+                    }
+                }
+        );
+
+        secView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        sec = String.valueOf(parent.getItemAtPosition(position));
+                        sec = String.format("%02d", Integer.parseInt(sec));
+                        displaySec.setText(" " + sec);
+                    }
+                }
+        );
+
+
+
+
 
         //Add views
         rLayout.addView(topHeading, topHeadingDetails);
