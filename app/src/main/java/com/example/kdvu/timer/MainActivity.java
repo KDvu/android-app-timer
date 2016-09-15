@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         String[] secList = new String[60];
 
         fillArray(hourList); //From 0 to 23
-        fillArray(minList); //From 1 to 59
-        fillArray(secList); //From 1 to 59
+        fillArray(minList); //From 0 to 59
+        fillArray(secList); //From 0 to 59
 
         ListAdapter listA1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
         ListAdapter listA2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, minList);
@@ -50,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         TextView minHeading = new TextView(this);
         TextView secHeading = new TextView(this);
 
+        TextView displayHour = new TextView(this);
+        TextView displayMin = new TextView(this);
+        TextView displaySec = new TextView(this);
+
         //Set TextView text
         topHeading.setText("Select Time");
         topHeading.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28);
@@ -57,11 +61,23 @@ public class MainActivity extends AppCompatActivity {
         minHeading.setText("Min");
         secHeading.setText("Sec");
 
+        displayHour.setText("Hour :");
+        displayMin.setText(" Min :");
+        displaySec.setText(" Sec");
+
+        displayHour.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+        displayMin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+        displaySec.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+
         //Set TextView ids
         topHeading.setId(R.id.topHeading);
         hourHeading.setId(R.id.hourHeading);
         minHeading.setId(R.id.minHeading);
         secHeading.setId(R.id.secHeading);
+
+        displayHour.setId(R.id.displayHour);
+        displayMin.setId(R.id.displayMin);
+        displaySec.setId(R.id.displaySec);
 
         //Set size of widgets
         RelativeLayout.LayoutParams topHeadingDetails = new RelativeLayout.LayoutParams(
@@ -72,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams secHeadingDetails = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams displayHourDetails = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams displayMinDetails = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams displaySecDetails = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
         RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams secViewDetails = new RelativeLayout.LayoutParams(100, 200);
@@ -102,6 +125,15 @@ public class MainActivity extends AppCompatActivity {
         secViewDetails.addRule(RelativeLayout.BELOW, secHeading.getId());
         secViewDetails.addRule(RelativeLayout.RIGHT_OF, minView.getId());
 
+        displayMinDetails.addRule(RelativeLayout.BELOW, minView.getId());
+        displayMinDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        displayHourDetails.addRule(RelativeLayout.BELOW, hourView.getId());
+        displayHourDetails.addRule(RelativeLayout.LEFT_OF, displayMin.getId());
+
+        displaySecDetails.addRule(RelativeLayout.BELOW, secView.getId());
+        displaySecDetails.addRule(RelativeLayout.RIGHT_OF, displayMin.getId());
+
         //Add views
         rLayout.addView(topHeading, topHeadingDetails);
         rLayout.addView(minHeading, minHeadingDetails);
@@ -111,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
         rLayout.addView(minView, minViewDetails);
         rLayout.addView(hourView, hourViewDetails);
         rLayout.addView(secView, secViewDetails);
+
+        rLayout.addView(displayMin, displayMinDetails);
+        rLayout.addView(displayHour, displayHourDetails);
+        rLayout.addView(displaySec, displaySecDetails);
+
 
         setContentView(rLayout);
     }
