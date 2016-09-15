@@ -117,13 +117,15 @@ public class MainActivity extends AppCompatActivity {
 
         minViewDetails.addRule(RelativeLayout.BELOW, hourHeading.getId());
         minViewDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        minViewDetails.setMargins(50,0,50,0);
+        minViewDetails.setMargins(50,0,50,50);
 
         hourViewDetails.addRule(RelativeLayout.BELOW, hourHeading.getId());
         hourViewDetails.addRule(RelativeLayout.LEFT_OF, minView.getId());
+        hourViewDetails.setMargins(0,0,0,50);
 
         secViewDetails.addRule(RelativeLayout.BELOW, secHeading.getId());
         secViewDetails.addRule(RelativeLayout.RIGHT_OF, minView.getId());
+        secViewDetails.setMargins(0,0,0,50);
 
         displayMinDetails.addRule(RelativeLayout.BELOW, minView.getId());
         displayMinDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -147,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         rLayout.addView(displayMin, displayMinDetails);
         rLayout.addView(displayHour, displayHourDetails);
         rLayout.addView(displaySec, displaySecDetails);
-
 
         setContentView(rLayout);
     }
