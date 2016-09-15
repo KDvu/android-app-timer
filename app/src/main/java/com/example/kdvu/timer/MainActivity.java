@@ -46,15 +46,19 @@ public class MainActivity extends AppCompatActivity {
 
         //Create rules for positioning
         topHeadingDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        topHeadingDetails.setMargins(10,10,10,10);
 
         minHeadingDetails.addRule(RelativeLayout.BELOW, topHeading.getId());
         minHeadingDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        minHeadingDetails.setMargins(100,0,100,10);
 
         hourHeadingDetails.addRule(RelativeLayout.BELOW, topHeading.getId());
         hourHeadingDetails.addRule(RelativeLayout.LEFT_OF, minHeading.getId());
+        hourHeadingDetails.setMargins(0,0,0,20);
 
         secHeadingDetails.addRule(RelativeLayout.BELOW, topHeading.getId());
         secHeadingDetails.addRule(RelativeLayout.RIGHT_OF, minHeading.getId());
+        secHeadingDetails.setMargins(0,0,0,20);
 
         rLayout.addView(topHeading, topHeadingDetails);
         rLayout.addView(minHeading, minHeadingDetails);
