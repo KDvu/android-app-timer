@@ -24,6 +24,8 @@ public class Timer extends AppCompatActivity {
 
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
+
+        //TextViews
         final TextView hourDisplay = new TextView(this);
         final TextView minDisplay = new TextView(this);
         final TextView secDisplay = new TextView(this);
@@ -40,6 +42,15 @@ public class Timer extends AppCompatActivity {
         minDisplay.setId(R.id.minDisplay);
         secDisplay.setId(R.id.secDisplay);
 
+        //Buttons
+        final Button startBtn = new Button(this);
+        final Button restartBtn = new Button(this);
+
+        startBtn.setText("Start");
+        restartBtn.setText("Reset");
+
+        RelativeLayout.LayoutParams startBtnDetails = wrapContent();
+        RelativeLayout.LayoutParams restartBtnDetails = wrapContent();
         RelativeLayout.LayoutParams hourDisplayDetails = wrapContent();
         RelativeLayout.LayoutParams minDisplayDetails = wrapContent();
         RelativeLayout.LayoutParams secDisplayDetails = wrapContent();
@@ -49,13 +60,25 @@ public class Timer extends AppCompatActivity {
 
         hourDisplayDetails.addRule(RelativeLayout.LEFT_OF, minDisplay.getId());
         hourDisplayDetails.addRule(RelativeLayout.CENTER_VERTICAL);
+        hourDisplayDetails.setMargins(0,0,0,50);
 
         secDisplayDetails.addRule(RelativeLayout.RIGHT_OF, minDisplay.getId());
         secDisplayDetails.addRule(RelativeLayout.CENTER_VERTICAL);
+        secDisplayDetails.setMargins(0,0,0,50);
+
+        startBtnDetails.addRule(RelativeLayout.BELOW, hourDisplay.getId());
+        startBtnDetails.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        startBtnDetails.setMargins(100,0,0,0);
+
+        restartBtnDetails.addRule(RelativeLayout.BELOW, secDisplay.getId());
+        restartBtnDetails.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        restartBtnDetails.setMargins(0,0,120,0);
 
         rLayout.addView(minDisplay, minDisplayDetails);
         rLayout.addView(hourDisplay, hourDisplayDetails);
         rLayout.addView(secDisplay, secDisplayDetails);
+        rLayout.addView(startBtn, startBtnDetails);
+        rLayout.addView(restartBtn, restartBtnDetails);
         setContentView(rLayout);
     }
 
