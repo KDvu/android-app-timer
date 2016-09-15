@@ -80,21 +80,14 @@ public class MainActivity extends AppCompatActivity {
         displaySec.setId(R.id.displaySec);
 
         //Set size of widgets
-        RelativeLayout.LayoutParams topHeadingDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams hourHeadingDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams minHeadingDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams secHeadingDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams displayHourDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams displayMinDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams displaySecDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
+        RelativeLayout.LayoutParams topHeadingDetails = warpContent();
+        RelativeLayout.LayoutParams hourHeadingDetails = warpContent();
+        RelativeLayout.LayoutParams minHeadingDetails = warpContent();
+        RelativeLayout.LayoutParams secHeadingDetails = warpContent();
+        RelativeLayout.LayoutParams displayHourDetails = warpContent();
+        RelativeLayout.LayoutParams displayMinDetails = warpContent();
+        RelativeLayout.LayoutParams displaySecDetails = warpContent();
+        
         RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams secViewDetails = new RelativeLayout.LayoutParams(100, 200);
@@ -157,5 +150,9 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < array.length; i++){
             array[i] = String.valueOf(i);
         }
+    }
+
+    public RelativeLayout.LayoutParams warpContent(){
+        return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     }
 }
