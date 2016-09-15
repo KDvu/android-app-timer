@@ -1,13 +1,41 @@
 package com.example.kdvu.timer;
 
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.util.TypedValue;
 
+import org.w3c.dom.Text;
+
 public class Timer extends AppCompatActivity {
+/*
+    private TextView hourDisplay;
+    private TextView minDisplay;
+    private TextView secDisplay;
+
+    private Button startBtn = new Button(this);
+    private Button restartBtn = new Button(this);
+*/
+    private Object mPauseLock = new Object();
+    private boolean mPaused = false;
+    private boolean mFinished = false;
+    private boolean started = false;
+    private int a = 0;
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            TextView sec = (TextView) findViewById(R.id.secDisplay);
+            a++;
+            sec.setText(String.valueOf(a));
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +53,6 @@ public class Timer extends AppCompatActivity {
         String current_hour = hour;
         String current_min = min;
         String current_sec = sec;
-
 
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
@@ -51,9 +78,22 @@ public class Timer extends AppCompatActivity {
         final Button startBtn = new Button(this);
         final Button restartBtn = new Button(this);
 
+        startBtn.setId(R.id.startBtn);
+        restartBtn.setId(R.id.restartBtn);
+
         startBtn.setText("Start");
         restartBtn.setText("Reset");
 
+        //Event Handlers
+        startBtn.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        startTimer();
+                    }
+                }
+        );
+
+        //Positioning
         RelativeLayout.LayoutParams startBtnDetails = wrapContent();
         RelativeLayout.LayoutParams restartBtnDetails = wrapContent();
         RelativeLayout.LayoutParams hourDisplayDetails = wrapContent();
@@ -89,5 +129,49 @@ public class Timer extends AppCompatActivity {
 
     public RelativeLayout.LayoutParams wrapContent(){
         return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    public void startTimer(){
+        //minDisplay.setText("a");
+        TextView hour = (TextView) findViewById(R.id.hourDisplay);
+        TextView min = (TextView) findViewById(R.id.minDisplay);
+        TextView sec = (TextView) findViewById(R.id.secDisplay);
+
+        Button startBtn = (Button) findViewById(R.id.startBtn);
+        startBtn.setText("Pause");
+        startBtn.setBackgroundColor(Color.YELLOW);
+
+        if(!started){
+            started = true;
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    while(!mFinished){
+                        try{
+                            wait(1000);
+                        } catch (Exception e){}
+                        handler.sendEmptyMessage(0);
+                        synchronized (mPauseLock){
+                            while (mPaused){
+                                try{
+                                    mPauseLock.wait();
+                                } catch(InterruptedException e){}
+                            }
+                        }
+                    }
+                }
+            };
+            Thread t = new Thread(r);
+            t.start();
+        } else if (!mPaused){
+            synchronized (mPauseLock){
+                mPaused = true;
+            }
+        } else if (mPaused){
+            synchronized (mPauseLock){
+                mPaused = false;
+                mPauseLock.notifyAll();
+            }
+        }
     }
 }
