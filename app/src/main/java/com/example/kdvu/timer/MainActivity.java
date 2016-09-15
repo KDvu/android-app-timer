@@ -3,8 +3,11 @@ package com.example.kdvu.timer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +17,28 @@ public class MainActivity extends AppCompatActivity {
 
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
+
+        //Items for ListViews + list adapators
+        String[] hourList = new String[24];
+        String[] minList = new String[60];
+        String[] secList = new String[60];
+
+        fillArray(hourList, 0); //From 0 to 23
+        fillArray(minList, 1); //From 1 to 59
+        fillArray(secList, 1); //From 1 to 59
+
+        ListAdapter listA1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
+        ListAdapter listA2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
+        ListAdapter listA3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, hourList);
+
+        //ListViews + setting adapters
+        ListView hourView = new ListView(this);
+        ListView minView = new ListView(this);
+        ListView secView = new ListView(this);
+
+        hourView.setAdapter(listA1);
+        minView.setAdapter(listA2);
+        secView.setAdapter(listA3);
 
         //TextViews
         TextView topHeading = new TextView(this);
@@ -66,5 +91,11 @@ public class MainActivity extends AppCompatActivity {
         rLayout.addView(secHeading, secHeadingDetails);
 
         setContentView(rLayout);
+    }
+
+    public void fillArray(String[] array, int num){
+        for(int i = num; i < array.length; i++){
+            array[i] = String.valueOf(i);
+        }
     }
 }
