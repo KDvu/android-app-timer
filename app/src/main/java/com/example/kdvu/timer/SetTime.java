@@ -1,5 +1,6 @@
 package com.example.kdvu.timer;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class SetTime extends AppCompatActivity {
 
@@ -177,6 +179,18 @@ public class SetTime extends AppCompatActivity {
                         sec = String.valueOf(parent.getItemAtPosition(position));
                         sec = String.format("%02d", Integer.parseInt(sec));
                         displaySec.setText(" " + sec);
+                    }
+                }
+        );
+        setTimeButton.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        if(hour.equals("00") && min.equals("00") && sec.equals("00"))
+                            Toast.makeText(SetTime.this, "You have not set a time", Toast.LENGTH_SHORT).show();
+                        else{
+                            Intent i = new Intent(SetTime.this, Timer.class);
+                            startActivity(i);
+                        }
                     }
                 }
         );
