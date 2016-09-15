@@ -94,15 +94,15 @@ public class SetTime extends AppCompatActivity {
         displaySec.setId(R.id.displaySec);
 
         //Set size of widgets
-        RelativeLayout.LayoutParams setTimeButtonDetails = warpContent();
+        RelativeLayout.LayoutParams setTimeButtonDetails = wrapContent();
 
-        RelativeLayout.LayoutParams topHeadingDetails = warpContent();
-        RelativeLayout.LayoutParams hourHeadingDetails = warpContent();
-        RelativeLayout.LayoutParams minHeadingDetails = warpContent();
-        RelativeLayout.LayoutParams secHeadingDetails = warpContent();
-        RelativeLayout.LayoutParams displayHourDetails = warpContent();
-        RelativeLayout.LayoutParams displayMinDetails = warpContent();
-        RelativeLayout.LayoutParams displaySecDetails = warpContent();
+        RelativeLayout.LayoutParams topHeadingDetails = wrapContent();
+        RelativeLayout.LayoutParams hourHeadingDetails = wrapContent();
+        RelativeLayout.LayoutParams minHeadingDetails = wrapContent();
+        RelativeLayout.LayoutParams secHeadingDetails = wrapContent();
+        RelativeLayout.LayoutParams displayHourDetails = wrapContent();
+        RelativeLayout.LayoutParams displayMinDetails = wrapContent();
+        RelativeLayout.LayoutParams displaySecDetails = wrapContent();
 
         RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
@@ -189,6 +189,9 @@ public class SetTime extends AppCompatActivity {
                             Toast.makeText(SetTime.this, "You have not set a time", Toast.LENGTH_SHORT).show();
                         else{
                             Intent i = new Intent(SetTime.this, Timer.class);
+                            i.putExtra("hour", hour);
+                            i.putExtra("min", min);
+                            i.putExtra("sec", sec);
                             startActivity(i);
                         }
                     }
@@ -220,7 +223,7 @@ public class SetTime extends AppCompatActivity {
         }
     }
 
-    public RelativeLayout.LayoutParams warpContent(){
+    public RelativeLayout.LayoutParams wrapContent(){
         return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     }
 }
