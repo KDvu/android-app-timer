@@ -22,6 +22,11 @@ public class Timer extends AppCompatActivity {
         String min = timerData.getString("min");
         String sec = timerData.getString("sec");
 
+        String current_hour = hour;
+        String current_min = min;
+        String current_sec = sec;
+
+
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
 
@@ -34,9 +39,9 @@ public class Timer extends AppCompatActivity {
         minDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         secDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
 
-        hourDisplay.setText(hour + " :");
-        minDisplay.setText(" " + min + " : ");
-        secDisplay.setText(sec);
+        hourDisplay.setText(current_hour + " :");
+        minDisplay.setText(" " + current_min + " : ");
+        secDisplay.setText(current_sec);
 
         hourDisplay.setId(R.id.hourDisplay);
         minDisplay.setId(R.id.minDisplay);
