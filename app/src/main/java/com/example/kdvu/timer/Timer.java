@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.util.TypedValue;
 
 public class Timer extends AppCompatActivity {
 
@@ -26,6 +27,10 @@ public class Timer extends AppCompatActivity {
         final TextView hourDisplay = new TextView(this);
         final TextView minDisplay = new TextView(this);
         final TextView secDisplay = new TextView(this);
+
+        hourDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+        minDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+        secDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
 
         hourDisplay.setText(hour + " :");
         minDisplay.setText(" " + min + " : ");
@@ -52,7 +57,6 @@ public class Timer extends AppCompatActivity {
         rLayout.addView(hourDisplay, hourDisplayDetails);
         rLayout.addView(secDisplay, secDisplayDetails);
         setContentView(rLayout);
-
     }
 
     public RelativeLayout.LayoutParams wrapContent(){
