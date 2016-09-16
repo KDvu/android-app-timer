@@ -26,14 +26,18 @@ public class Timer extends AppCompatActivity {
     private boolean mPaused = false;
     private boolean mFinished = false;
     private boolean started = false;
-    private int a = 0;
+    private int a = 60;
+
+    private int currentHour;
+    private int currentMin;
+    private int currentSec;
 
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             TextView sec = (TextView) findViewById(R.id.secDisplay);
-            a++;
-            sec.setText(String.valueOf(a));
+            currentMin--;
+            sec.setText(String.valueOf(currentMin));
         }
     };
 
@@ -50,9 +54,9 @@ public class Timer extends AppCompatActivity {
         String min = timerData.getString("min");
         String sec = timerData.getString("sec");
 
-        String current_hour = hour;
-        String current_min = min;
-        String current_sec = sec;
+        currentHour = Integer.parseInt(hour);
+        currentMin = Integer.parseInt(min);
+        currentSec = Integer.parseInt(sec);
 
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
@@ -66,9 +70,9 @@ public class Timer extends AppCompatActivity {
         minDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         secDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
 
-        hourDisplay.setText(current_hour + " :");
-        minDisplay.setText(" " + current_min + " : ");
-        secDisplay.setText(current_sec);
+        hourDisplay.setText(hour + " :");
+        minDisplay.setText(" " + min + " : ");
+        secDisplay.setText(sec);
 
         hourDisplay.setId(R.id.hourDisplay);
         minDisplay.setId(R.id.minDisplay);
@@ -147,17 +151,22 @@ public class Timer extends AppCompatActivity {
                 @Override
                 public void run() {
                     while(!mFinished){
-                        try{
-                            wait(1000);
-                        } catch (Exception e){}
-                        handler.sendEmptyMessage(0);
-                        synchronized (mPauseLock){
-                            while (mPaused){
-                                try{
-                                    mPauseLock.wait();
-                                } catch(InterruptedException e){}
+                        long oneSec = System.currentTimeMillis() + 1000;
+                        while(System.currentTimeMillis() < oneSec) {
+                            try {
+                                wait(1000);
+                            } catch (Exception e) {
+                            }
+                            synchronized (mPauseLock) {
+                                while (mPaused) {
+                                    try {
+                                        mPauseLock.wait();
+                                    } catch (InterruptedException e) {
+                                    }
+                                }
                             }
                         }
+                        handler.sendEmptyMessage(0);
                     }
                 }
             };
