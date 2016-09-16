@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.util.TypedValue;
+import android.util.Log;
 
-import org.w3c.dom.Text;
 
 public class Timer extends AppCompatActivity {
 /*
@@ -36,8 +36,34 @@ public class Timer extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             TextView sec = (TextView) findViewById(R.id.secDisplay);
-            currentMin--;
-            sec.setText(String.valueOf(currentMin));
+            TextView min = (TextView) findViewById(R.id.minDisplay);
+            TextView hour = (TextView) findViewById(R.id.hourDisplay);
+
+            if(currentSec != 0){
+                currentSec--;
+                sec.setText(String.format("%02d",currentSec));
+            } else if (currentSec == 0){
+                if (currentMin != 0){
+                    currentSec = 59;
+                    sec.setText(String.format("%02d",currentSec));
+
+                    currentMin--;
+                    min.setText(String.format("%02d",currentMin) + " : ");
+                } else if (currentMin == 0 && currentHour != 0) {
+                        currentSec = 59;
+                        sec.setText(String.format("%02d",currentSec));
+
+                        currentMin = 59;
+                        min.setText(String.format("%02d",currentMin) + " : ");
+
+                        currentHour--;
+                        hour.setText(String.format("%02d",currentHour) + " : ");
+                } else {
+                    sec.setText(String.format("%02d",0));
+                    mFinished = true;
+                }
+            }
+
         }
     };
 
@@ -70,8 +96,8 @@ public class Timer extends AppCompatActivity {
         minDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         secDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
 
-        hourDisplay.setText(hour + " :");
-        minDisplay.setText(" " + min + " : ");
+        hourDisplay.setText(hour + " : ");
+        minDisplay.setText(min + " : ");
         secDisplay.setText(sec);
 
         hourDisplay.setId(R.id.hourDisplay);
