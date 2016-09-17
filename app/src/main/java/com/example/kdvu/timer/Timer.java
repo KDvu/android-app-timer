@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.util.TypedValue;
 import android.util.Log;
 
+import org.w3c.dom.Text;
+
 
 public class Timer extends AppCompatActivity {
 /*
@@ -76,9 +78,9 @@ public class Timer extends AppCompatActivity {
             return;
         }
 
-        String hour = timerData.getString("hour");
-        String min = timerData.getString("min");
-        String sec = timerData.getString("sec");
+        final String hour = timerData.getString("hour");
+        final String min = timerData.getString("min");
+        final String sec = timerData.getString("sec");
 
         currentHour = Integer.parseInt(hour);
         currentMin = Integer.parseInt(min);
@@ -96,9 +98,7 @@ public class Timer extends AppCompatActivity {
         minDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         secDisplay.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
 
-        hourDisplay.setText(hour + " : ");
-        minDisplay.setText(min + " : ");
-        secDisplay.setText(sec);
+        resetTimer(hour,min,sec,hourDisplay,minDisplay,secDisplay);
 
         hourDisplay.setId(R.id.hourDisplay);
         minDisplay.setId(R.id.minDisplay);
@@ -107,6 +107,9 @@ public class Timer extends AppCompatActivity {
         //Buttons
         final Button startBtn = new Button(this);
         final Button restartBtn = new Button(this);
+
+        startBtn.setBackgroundResource(android.R.drawable.btn_default);
+        restartBtn.setBackgroundResource(android.R.drawable.btn_default);
 
         startBtn.setId(R.id.startBtn);
         restartBtn.setId(R.id.restartBtn);
@@ -123,6 +126,20 @@ public class Timer extends AppCompatActivity {
                     }
                 }
         );
+
+        restartBtn.setOnClickListener(
+           new Button.OnClickListener(){
+               public void onClick(View v){
+                   //Pauses the timer if its still running
+                   changeButton(startBtn, "Start", 0);
+                   startBtn.setBackgroundResource(android.R.drawable.btn_default);
+                   synchronized (mPauseLock){
+                       mPaused = true;
+                   }
+                   resetTimer(hour,min,sec,hourDisplay,minDisplay,secDisplay);
+               }
+           }
+        );;
 
         //Positioning
         RelativeLayout.LayoutParams startBtnDetails = wrapContent();
@@ -164,7 +181,10 @@ public class Timer extends AppCompatActivity {
 
     public void changeButton(Button button, String text, int color){
         button.setText(text);
-        button.setBackgroundColor(color);
+        if(color == 0)
+            button.setBackgroundColor(color);
+        else
+            button.setBackgroundResource(android.R.drawable.btn_default);
     }
 
     public void startTimer(Button button){
@@ -209,5 +229,14 @@ public class Timer extends AppCompatActivity {
                 mPauseLock.notifyAll();
             }
         }
+    }
+
+    public void resetTimer(String hour, String min, String sec, TextView hourDisplay, TextView minDisplay, TextView secDisplay){
+        currentHour = Integer.parseInt(hour);
+        currentMin = Integer.parseInt(min);
+        currentSec = Integer.parseInt(sec);
+        hourDisplay.setText(hour + " : ");
+        minDisplay.setText(min + " : ");
+        secDisplay.setText(sec);
     }
 }
