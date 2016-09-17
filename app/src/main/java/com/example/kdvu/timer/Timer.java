@@ -118,7 +118,8 @@ public class Timer extends AppCompatActivity {
         startBtn.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
-                        startTimer();
+                        changeButton(startBtn, "Pause", Color.YELLOW);
+                        startTimer(startBtn);
                     }
                 }
         );
@@ -161,16 +162,12 @@ public class Timer extends AppCompatActivity {
         return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    public void startTimer(){
-        //minDisplay.setText("a");
-        TextView hour = (TextView) findViewById(R.id.hourDisplay);
-        TextView min = (TextView) findViewById(R.id.minDisplay);
-        TextView sec = (TextView) findViewById(R.id.secDisplay);
+    public void changeButton(Button button, String text, int color){
+        button.setText(text);
+        button.setBackgroundColor(color);
+    }
 
-        Button startBtn = (Button) findViewById(R.id.startBtn);
-        startBtn.setText("Pause");
-        startBtn.setBackgroundColor(Color.YELLOW);
-
+    public void startTimer(Button button){
         if(!started){
             started = true;
             Runnable r = new Runnable() {
@@ -199,10 +196,14 @@ public class Timer extends AppCompatActivity {
             Thread t = new Thread(r);
             t.start();
         } else if (!mPaused){
+            changeButton(button, "Resume", Color.BLUE);
+
             synchronized (mPauseLock){
                 mPaused = true;
             }
         } else if (mPaused){
+            changeButton(button, "Pause", Color.YELLOW);
+
             synchronized (mPauseLock){
                 mPaused = false;
                 mPauseLock.notifyAll();
