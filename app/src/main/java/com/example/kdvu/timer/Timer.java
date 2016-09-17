@@ -121,7 +121,7 @@ public class Timer extends AppCompatActivity {
         startBtn.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
-                        changeButton(startBtn, "Pause", Color.YELLOW);
+                        changeButtonText(startBtn, "Pause");
                         startTimer(startBtn);
                     }
                 }
@@ -131,7 +131,7 @@ public class Timer extends AppCompatActivity {
            new Button.OnClickListener(){
                public void onClick(View v){
                    //Pauses the timer if its still running
-                   changeButton(startBtn, "Start", 0);
+                   changeButtonText(startBtn, "Start");
                    startBtn.setBackgroundResource(android.R.drawable.btn_default);
                    synchronized (mPauseLock){
                        mPaused = true;
@@ -179,12 +179,8 @@ public class Timer extends AppCompatActivity {
         return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    public void changeButton(Button button, String text, int color){
+    public void changeButtonText(Button button, String text){
         button.setText(text);
-        if(color == 0)
-            button.setBackgroundColor(color);
-        else
-            button.setBackgroundResource(android.R.drawable.btn_default);
     }
 
     public void startTimer(Button button){
@@ -216,13 +212,13 @@ public class Timer extends AppCompatActivity {
             Thread t = new Thread(r);
             t.start();
         } else if (!mPaused){
-            changeButton(button, "Resume", Color.BLUE);
+            changeButtonText(button, "Resume");
 
             synchronized (mPauseLock){
                 mPaused = true;
             }
         } else if (mPaused){
-            changeButton(button, "Pause", Color.YELLOW);
+            changeButtonText(button, "Pause");
 
             synchronized (mPauseLock){
                 mPaused = false;
