@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -72,6 +74,8 @@ public class Timer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle timerData = getIntent().getExtras();
         if (timerData == null){
@@ -234,5 +238,24 @@ public class Timer extends AppCompatActivity {
         hourDisplay.setText(hour + " : ");
         minDisplay.setText(min + " : ");
         secDisplay.setText(sec);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        menu.add(Menu.NONE, 1, Menu.NONE, "item name");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case 1:
+                return true;
+            default:
+                return false;
+        }
     }
 }
