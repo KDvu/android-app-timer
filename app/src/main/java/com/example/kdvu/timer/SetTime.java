@@ -116,9 +116,7 @@ public class SetTime extends AppCompatActivity {
         minHeading.setText("Min");
         secHeading.setText("Sec");
 
-        displayHour.setText(hour + " :");
-        displayMin.setText(" " + min + " :");
-        displaySec.setText(" " + sec);
+        printTime(displayHour, displayMin, displaySec);
 
         displayHour.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
         displayMin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
@@ -236,6 +234,7 @@ public class SetTime extends AppCompatActivity {
                     }
                 }
         );
+
         setTimeButton.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
@@ -261,6 +260,30 @@ public class SetTime extends AppCompatActivity {
                         dbHandler.clearTimes();
                         emptyArray(times);
                         printUsedTimes(usedTime1,usedTime2,usedTime3);
+                    }
+                }
+        );
+
+        usedTime1.setOnClickListener(
+                new TextView.OnClickListener(){
+                    public void onClick(View v){
+                        changeTimeDisplayed(0);
+                    }
+                }
+        );
+
+        usedTime2.setOnClickListener(
+                new TextView.OnClickListener(){
+                    public void onClick(View v){
+                        changeTimeDisplayed(1);
+                    }
+                }
+        );
+
+        usedTime3.setOnClickListener(
+                new TextView.OnClickListener(){
+                    public void onClick(View v){
+                        changeTimeDisplayed(2);
                     }
                 }
         );
@@ -313,6 +336,24 @@ public class SetTime extends AppCompatActivity {
         for(int i = 0; i < array.length; i++){
             Arrays.fill(array[i], 0);
         }
+    }
+
+    public void printTime(TextView h, TextView m, TextView s){
+        h.setText(hour + " : ");
+        m.setText(min + " :");
+        s.setText(" " + sec);
+    }
+
+    public void changeTimeDisplayed(int row){
+        TextView h = (TextView) findViewById(R.id.displayHour);
+        TextView m = (TextView) findViewById(R.id.displayMin);
+        TextView s = (TextView) findViewById(R.id.displaySec);
+
+        hour = String.format("%02d", times[row][0]);
+        min = String.format("%02d", times[row][1]);
+        sec = String.format("%02d", times[row][2]);
+
+        printTime(h,m,s);
     }
 
     public RelativeLayout.LayoutParams wrapContent(){
