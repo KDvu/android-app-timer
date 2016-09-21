@@ -40,7 +40,7 @@ public class SetTime extends AppCompatActivity {
         //dbHandler.addNewTime(t2);
         //dbHandler.clearTimes();
         //dbHandler.insertTimes(times);
-        getUsedTimes();
+        //getUsedTimes();
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
 
@@ -48,6 +48,10 @@ public class SetTime extends AppCompatActivity {
         Button setTimeButton = new Button(this);
         setTimeButton.setText("Set Time");
         setTimeButton.setId(R.id.setTimeButton);
+
+        Button clearBtn = new Button(this);
+        clearBtn.setText("clear");
+        clearBtn.setId(R.id.clearBtn);
 
         //Items for ListViews + list adapators
         String[] hourList = new String[24];
@@ -125,7 +129,7 @@ public class SetTime extends AppCompatActivity {
 
         //Set size of widgets
         RelativeLayout.LayoutParams setTimeButtonDetails = wrapContent();
-
+        RelativeLayout.LayoutParams clearBtnDetails = wrapContent();
         RelativeLayout.LayoutParams topHeadingDetails = wrapContent();
         RelativeLayout.LayoutParams hourHeadingDetails = wrapContent();
         RelativeLayout.LayoutParams minHeadingDetails = wrapContent();
@@ -133,10 +137,9 @@ public class SetTime extends AppCompatActivity {
         RelativeLayout.LayoutParams displayHourDetails = wrapContent();
         RelativeLayout.LayoutParams displayMinDetails = wrapContent();
         RelativeLayout.LayoutParams displaySecDetails = wrapContent();
-        RelativeLayout.LayoutParams usedTime1Detatils = wrapContent();
-        RelativeLayout.LayoutParams usedTime2Detatils = wrapContent();
-        RelativeLayout.LayoutParams usedTime3Detatils = wrapContent();
-
+        RelativeLayout.LayoutParams usedTime1Details = wrapContent();
+        RelativeLayout.LayoutParams usedTime2Details = wrapContent();
+        RelativeLayout.LayoutParams usedTime3Details = wrapContent();
         RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams secViewDetails = new RelativeLayout.LayoutParams(100, 200);
@@ -182,15 +185,17 @@ public class SetTime extends AppCompatActivity {
         setTimeButtonDetails.addRule(RelativeLayout.BELOW, displayMin.getId());
         setTimeButtonDetails.setMargins(0,50,0,30);
 
-        usedTime1Detatils.addRule(RelativeLayout.BELOW, setTimeButton.getId());
-        usedTime1Detatils.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        usedTime1Details.addRule(RelativeLayout.BELOW, setTimeButton.getId());
+        usedTime1Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        usedTime2Detatils.addRule(RelativeLayout.BELOW, usedTime1.getId());
-        usedTime2Detatils.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        usedTime2Details.addRule(RelativeLayout.BELOW, usedTime1.getId());
+        usedTime2Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        usedTime3Detatils.addRule(RelativeLayout.BELOW, usedTime2.getId());
-        usedTime3Detatils.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        usedTime3Details.addRule(RelativeLayout.BELOW, usedTime2.getId());
+        usedTime3Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
+        clearBtnDetails.addRule(RelativeLayout.BELOW, usedTime3.getId());
+        clearBtnDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
         //Event Handlers
         hourView.setOnItemClickListener(
@@ -231,12 +236,23 @@ public class SetTime extends AppCompatActivity {
                         if(hour.equals("00") && min.equals("00") && sec.equals("00"))
                             Toast.makeText(SetTime.this, "You have not set a time", Toast.LENGTH_SHORT).show();
                         else{
+                            dbHandler.addNewTime(new Times(strToInt(hour),strToInt(min),strToInt(sec)));
+                            dbHandler.insertTimes(times);
+                            printUsedTimes(usedTime1,usedTime2,usedTime3);
                             Intent i = new Intent(SetTime.this, Timer.class);
                             i.putExtra("hour", hour);
                             i.putExtra("min", min);
                             i.putExtra("sec", sec);
                             startActivity(i);
                         }
+                    }
+                }
+        );
+
+        clearBtn.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        dbHandler.clearTimes();
                     }
                 }
         );
@@ -257,23 +273,16 @@ public class SetTime extends AppCompatActivity {
 
         rLayout.addView(setTimeButton, setTimeButtonDetails);
 
-        rLayout.addView(usedTime1, usedTime1Detatils);
-        rLayout.addView(usedTime2, usedTime2Detatils);
-        rLayout.addView(usedTime3, usedTime3Detatils);
+        rLayout.addView(usedTime1, usedTime1Details);
+        rLayout.addView(usedTime2, usedTime2Details);
+        rLayout.addView(usedTime3, usedTime3Details);
+
+        rLayout.addView(clearBtn, clearBtnDetails);
 
         setContentView(rLayout);
     }
 
-    public void fillArray(String[] array){
-        for(int i = 0; i < array.length; i++){
-            array[i] = String.valueOf(i);
-        }
-    }
-
-    public RelativeLayout.LayoutParams wrapContent(){
-        return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-    }
-
+    //***************DATABASE METHODS***********
     public void getUsedTimes(){
         dbHandler.insertTimes(times);
         for(int i = 0; i < 3; i++){
@@ -285,5 +294,21 @@ public class SetTime extends AppCompatActivity {
         v1.setText(times[0][0] + ":" + times[0][1] + ":" + times[0][2]);
         v2.setText(times[1][0] + ":" + times[1][1] + ":" + times[1][2]);
         v3.setText(times[2][0] + ":" + times[2][1] + ":" + times[2][2]);
+    }
+
+    //***************UTILITY METHODS***********
+
+    public void fillArray(String[] array){
+        for(int i = 0; i < array.length; i++){
+            array[i] = String.valueOf(i);
+        }
+    }
+
+    public RelativeLayout.LayoutParams wrapContent(){
+        return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    public int strToInt(String value){
+        return Integer.parseInt(value);
     }
 }
