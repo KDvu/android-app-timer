@@ -3,6 +3,7 @@ package com.example.kdvu.timer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,14 +17,28 @@ import android.widget.Toast;
 
 public class SetTime extends AppCompatActivity {
 
+    private static final String TAG = "com.example.kdvu.timer";
+
     private String hour = String.format("%02d", 0);
     private String min = String.format("%02d", 0);
     private String sec = String.format("%02d", 0);
+
+    private int[][] times = new int[3][3];
+
+    MyDBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        dbHandler = new MyDBHandler(this, null, null, 1);
+        //Times t = new Times(1,2,3);
+        //Times t2 = new Times(3,2,2);
+        //dbHandler.addNewTime(t);
+        //dbHandler.addNewTime(t2);
+        dbHandler.clearTimes();
+        //dbHandler.insertTimes(times);
+        printDatabase();
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
 
@@ -225,5 +240,12 @@ public class SetTime extends AppCompatActivity {
 
     public RelativeLayout.LayoutParams wrapContent(){
         return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    public void printDatabase(){
+        dbHandler.insertTimes(times);
+        for(int i = 0; i < 3; i++){
+            Log.d(TAG, "Hour: " + times[i][0] + " Min: " + times[i][1] + " Sec: " + times[i][2]);
+        }
     }
 }
