@@ -1,6 +1,8 @@
 package com.example.kdvu.timer;
 
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -65,9 +67,11 @@ public class Timer extends AppCompatActivity {
                 } else {
                     sec.setText(String.format("%02d",0));
                     mFinished = true;
+                    MediaPlayer mPlayer = MediaPlayer.create(Timer.this, R.raw.sound);
+                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mPlayer.start();
                 }
             }
-
         }
     };
 
@@ -250,7 +254,7 @@ public class Timer extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case android.R.id.home:
-                this.finish();
+                this.finish(); //Close activity
                 return true;
             case 1:
                 return true;
