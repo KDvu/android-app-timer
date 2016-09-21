@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
+
 public class SetTime extends AppCompatActivity {
 
     private static final String TAG = "com.example.kdvu.timer";
@@ -40,7 +42,7 @@ public class SetTime extends AppCompatActivity {
         //dbHandler.addNewTime(t2);
         //dbHandler.clearTimes();
         //dbHandler.insertTimes(times);
-        //getUsedTimes();
+        getUsedTimes();
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
 
@@ -162,15 +164,15 @@ public class SetTime extends AppCompatActivity {
 
         minViewDetails.addRule(RelativeLayout.BELOW, hourHeading.getId());
         minViewDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        minViewDetails.setMargins(50,0,50,50);
+        minViewDetails.setMargins(50,0,50,30);
 
         hourViewDetails.addRule(RelativeLayout.BELOW, hourHeading.getId());
         hourViewDetails.addRule(RelativeLayout.LEFT_OF, minView.getId());
-        hourViewDetails.setMargins(0,0,0,50);
+        hourViewDetails.setMargins(0,0,0,30);
 
         secViewDetails.addRule(RelativeLayout.BELOW, secHeading.getId());
         secViewDetails.addRule(RelativeLayout.RIGHT_OF, minView.getId());
-        secViewDetails.setMargins(0,0,0,50);
+        secViewDetails.setMargins(0,0,0,30);
 
         displayMinDetails.addRule(RelativeLayout.BELOW, minView.getId());
         displayMinDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -183,19 +185,23 @@ public class SetTime extends AppCompatActivity {
 
         setTimeButtonDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
         setTimeButtonDetails.addRule(RelativeLayout.BELOW, displayMin.getId());
-        setTimeButtonDetails.setMargins(0,50,0,30);
+        setTimeButtonDetails.setMargins(0,20,0,10);
 
         usedTime1Details.addRule(RelativeLayout.BELOW, setTimeButton.getId());
         usedTime1Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        usedTime1Details.setMargins(0,0,0,0);
 
         usedTime2Details.addRule(RelativeLayout.BELOW, usedTime1.getId());
         usedTime2Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        usedTime2Details.setMargins(0,5,0,5);
 
         usedTime3Details.addRule(RelativeLayout.BELOW, usedTime2.getId());
         usedTime3Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        usedTime3Details.setMargins(0,0,0,0);
 
         clearBtnDetails.addRule(RelativeLayout.BELOW, usedTime3.getId());
         clearBtnDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        clearBtnDetails.setMargins(0,20,0,0);
 
         //Event Handlers
         hourView.setOnItemClickListener(
@@ -237,7 +243,7 @@ public class SetTime extends AppCompatActivity {
                             Toast.makeText(SetTime.this, "You have not set a time", Toast.LENGTH_SHORT).show();
                         else{
                             dbHandler.addNewTime(new Times(strToInt(hour),strToInt(min),strToInt(sec)));
-                            dbHandler.insertTimes(times);
+                            getUsedTimes();
                             printUsedTimes(usedTime1,usedTime2,usedTime3);
                             Intent i = new Intent(SetTime.this, Timer.class);
                             i.putExtra("hour", hour);
@@ -253,6 +259,8 @@ public class SetTime extends AppCompatActivity {
                 new Button.OnClickListener(){
                     public void onClick(View v){
                         dbHandler.clearTimes();
+                        emptyArray(times);
+                        printUsedTimes(usedTime1,usedTime2,usedTime3);
                     }
                 }
         );
@@ -285,9 +293,6 @@ public class SetTime extends AppCompatActivity {
     //***************DATABASE METHODS***********
     public void getUsedTimes(){
         dbHandler.insertTimes(times);
-        for(int i = 0; i < 3; i++){
-            Log.d(TAG, "Hour: " + times[i][0] + " Min: " + times[i][1] + " Sec: " + times[i][2]);
-        }
     }
 
     public void printUsedTimes(TextView v1, TextView v2, TextView v3){
@@ -301,6 +306,12 @@ public class SetTime extends AppCompatActivity {
     public void fillArray(String[] array){
         for(int i = 0; i < array.length; i++){
             array[i] = String.valueOf(i);
+        }
+    }
+
+    public void emptyArray(int[][] array){
+        for(int i = 0; i < array.length; i++){
+            Arrays.fill(array[i], 0);
         }
     }
 
