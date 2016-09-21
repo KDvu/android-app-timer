@@ -53,7 +53,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         Log.d(TAG, "rows: " + numRows);
 
         if(numRows == 3){
-            db.update(TABLE_TIMES, values, "_id=1", null);
+            db.update(TABLE_TIMES, values, "_id=3", null);
             /*String query = "SELECT * FROM " + TABLE_TIMES + " WHERE hour = 0;";
             Cursor c = db.rawQuery(query, null);
             c.moveToFirst();
