@@ -319,9 +319,9 @@ public class SetTime extends AppCompatActivity {
     }
 
     public void printUsedTimes(TextView v1, TextView v2, TextView v3){
-        v1.setText(times[0][0] + ":" + times[0][1] + ":" + times[0][2]);
-        v2.setText(times[1][0] + ":" + times[1][1] + ":" + times[1][2]);
-        v3.setText(times[2][0] + ":" + times[2][1] + ":" + times[2][2]);
+        v1.setText(String.format("%02d",times[0][0]) + ":" + String.format("%02d",times[0][1]) + ":" + String.format("%02d",times[0][2]));
+        v2.setText(String.format("%02d",times[1][0]) + ":" + String.format("%02d",times[1][1]) + ":" + String.format("%02d",times[1][2]));
+        v3.setText(String.format("%02d",times[2][0]) + ":" + String.format("%02d",times[2][1]) + ":" + String.format("%02d",times[2][2]));
     }
 
     //***************UTILITY METHODS***********
