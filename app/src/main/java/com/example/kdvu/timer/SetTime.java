@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class SetTime extends AppCompatActivity {
 
     private static final String TAG = "com.example.kdvu.timer";
@@ -36,9 +38,9 @@ public class SetTime extends AppCompatActivity {
         //Times t2 = new Times(3,2,2);
         //dbHandler.addNewTime(t);
         //dbHandler.addNewTime(t2);
-        dbHandler.clearTimes();
+        //dbHandler.clearTimes();
         //dbHandler.insertTimes(times);
-        printDatabase();
+        getUsedTimes();
         //Layout
         RelativeLayout rLayout = new RelativeLayout(this);
 
@@ -83,6 +85,24 @@ public class SetTime extends AppCompatActivity {
         final TextView displayMin = new TextView(this);
         final TextView displaySec = new TextView(this);
 
+        final TextView usedTime1 = new TextView(this);
+        final TextView usedTime2 = new TextView(this);
+        final TextView usedTime3 = new TextView(this);
+
+        //Set TextView ids
+        topHeading.setId(R.id.topHeading);
+        hourHeading.setId(R.id.hourHeading);
+        minHeading.setId(R.id.minHeading);
+        secHeading.setId(R.id.secHeading);
+
+        displayHour.setId(R.id.displayHour);
+        displayMin.setId(R.id.displayMin);
+        displaySec.setId(R.id.displaySec);
+
+        usedTime1.setId(R.id.usedTime1);
+        usedTime2.setId(R.id.usedTime2);
+        usedTime3.setId(R.id.usedTime3);
+
         //Set TextView text
         topHeading.setText("Select Time");
         topHeading.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28);
@@ -98,15 +118,10 @@ public class SetTime extends AppCompatActivity {
         displayMin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
         displaySec.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 
-        //Set TextView ids
-        topHeading.setId(R.id.topHeading);
-        hourHeading.setId(R.id.hourHeading);
-        minHeading.setId(R.id.minHeading);
-        secHeading.setId(R.id.secHeading);
-
-        displayHour.setId(R.id.displayHour);
-        displayMin.setId(R.id.displayMin);
-        displaySec.setId(R.id.displaySec);
+        printUsedTimes(usedTime1, usedTime2, usedTime3);  //Print the previously used times receieved from the database
+        usedTime1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        usedTime2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        usedTime3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
 
         //Set size of widgets
         RelativeLayout.LayoutParams setTimeButtonDetails = wrapContent();
@@ -118,6 +133,9 @@ public class SetTime extends AppCompatActivity {
         RelativeLayout.LayoutParams displayHourDetails = wrapContent();
         RelativeLayout.LayoutParams displayMinDetails = wrapContent();
         RelativeLayout.LayoutParams displaySecDetails = wrapContent();
+        RelativeLayout.LayoutParams usedTime1Detatils = wrapContent();
+        RelativeLayout.LayoutParams usedTime2Detatils = wrapContent();
+        RelativeLayout.LayoutParams usedTime3Detatils = wrapContent();
 
         RelativeLayout.LayoutParams hourViewDetails = new RelativeLayout.LayoutParams(100, 200);
         RelativeLayout.LayoutParams minViewDetails = new RelativeLayout.LayoutParams(100, 200);
@@ -162,7 +180,17 @@ public class SetTime extends AppCompatActivity {
 
         setTimeButtonDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
         setTimeButtonDetails.addRule(RelativeLayout.BELOW, displayMin.getId());
-        setTimeButtonDetails.setMargins(0,50,0,0);
+        setTimeButtonDetails.setMargins(0,50,0,30);
+
+        usedTime1Detatils.addRule(RelativeLayout.BELOW, setTimeButton.getId());
+        usedTime1Detatils.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        usedTime2Detatils.addRule(RelativeLayout.BELOW, usedTime1.getId());
+        usedTime2Detatils.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        usedTime3Detatils.addRule(RelativeLayout.BELOW, usedTime2.getId());
+        usedTime3Detatils.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
 
         //Event Handlers
         hourView.setOnItemClickListener(
@@ -229,6 +257,10 @@ public class SetTime extends AppCompatActivity {
 
         rLayout.addView(setTimeButton, setTimeButtonDetails);
 
+        rLayout.addView(usedTime1, usedTime1Detatils);
+        rLayout.addView(usedTime2, usedTime2Detatils);
+        rLayout.addView(usedTime3, usedTime3Detatils);
+
         setContentView(rLayout);
     }
 
@@ -242,10 +274,16 @@ public class SetTime extends AppCompatActivity {
         return  new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    public void printDatabase(){
+    public void getUsedTimes(){
         dbHandler.insertTimes(times);
         for(int i = 0; i < 3; i++){
             Log.d(TAG, "Hour: " + times[i][0] + " Min: " + times[i][1] + " Sec: " + times[i][2]);
         }
+    }
+
+    public void printUsedTimes(TextView v1, TextView v2, TextView v3){
+        v1.setText(times[0][0] + ":" + times[0][1] + ":" + times[0][2]);
+        v2.setText(times[1][0] + ":" + times[1][1] + ":" + times[1][2]);
+        v3.setText(times[2][0] + ":" + times[2][1] + ":" + times[2][2]);
     }
 }
