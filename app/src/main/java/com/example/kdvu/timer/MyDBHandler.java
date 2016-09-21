@@ -3,6 +3,7 @@ package com.example.kdvu.timer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -47,7 +48,21 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_MIN, time.get_min());
         values.put(COLUMN_SEC, time.get_sec());
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_TIMES, null, values);
+
+        long numRows = DatabaseUtils.queryNumEntries(db, TABLE_TIMES);
+        Log.d(TAG, "rows: " + numRows);
+
+        if(numRows == 3){
+            db.update(TABLE_TIMES, values, "_id=1", null);
+            /*String query = "SELECT * FROM " + TABLE_TIMES + " WHERE hour = 0;";
+            Cursor c = db.rawQuery(query, null);
+            c.moveToFirst();
+            int id = c.getInt(c.getColumnIndex("_id"));
+            db.execSQL(query);
+            Log.d(TAG, "id=" + id);*/
+        } else{
+            db.insert(TABLE_TIMES, null, values);
+        }
         db.close();
     }
 
@@ -55,12 +70,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_TIMES);
         db.execSQL("vacuum");
+        //db.execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='" + TABLE_TIMES + "'");
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME='" + TABLE_TIMES + "'");
+
         db.close();
     }
 
     public void insertTimes(int[][] time){
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_TIMES + " WHERE 1";
+        String query = "SELECT * FROM " + TABLE_TIMES + " WHERE 1;";
 
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
@@ -73,18 +91,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         boolean ma = false;
         while(!c.isAfterLast() && i<MAX){
-            if(i < MAX){
-                ma = true;
-            } else
-                ma = false;
             time[i][0] = c.getInt(c.getColumnIndex("hour"));
             time[i][1] = c.getInt(c.getColumnIndex("min"));
             time[i][2] = c.getInt(c.getColumnIndex("sec"));
             i++;
             c.moveToNext();
-            Log.d(TAG, "" + i);
-            Log.d(TAG, "" + ma);
         }
+        db.close();
     }
 
 }
