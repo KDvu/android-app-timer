@@ -245,6 +245,7 @@ public class SetTime extends AppCompatActivity {
                             getUsedTimes();
                             printUsedTimes(usedTime1,usedTime2,usedTime3);
                             Intent i = new Intent(SetTime.this, Timer.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             i.putExtra("hour", hour);
                             i.putExtra("min", min);
                             i.putExtra("sec", sec);
