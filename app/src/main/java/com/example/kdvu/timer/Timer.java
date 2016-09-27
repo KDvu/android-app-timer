@@ -1,8 +1,6 @@
 package com.example.kdvu.timer;
 
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -14,20 +12,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.util.TypedValue;
-import android.util.Log;
-
-import org.w3c.dom.Text;
 
 
 public class Timer extends AppCompatActivity {
-/*
-    private TextView hourDisplay;
-    private TextView minDisplay;
-    private TextView secDisplay;
 
-    private Button startBtn = new Button(this);
-    private Button restartBtn = new Button(this);
-*/
     private Object mPauseLock = new Object();
     private boolean mPaused = false;
     private boolean mFinished = false;
@@ -67,9 +55,9 @@ public class Timer extends AppCompatActivity {
                 } else {
                     sec.setText(String.format("%02d",0));
                     mFinished = true;
-                    MediaPlayer mPlayer = MediaPlayer.create(Timer.this, R.raw.sound);
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mPlayer.start();
+                    Intent i = new Intent(Timer.this, Alarm.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                 }
             }
         }
