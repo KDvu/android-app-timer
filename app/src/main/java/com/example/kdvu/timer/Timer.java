@@ -1,5 +1,6 @@
 package com.example.kdvu.timer;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.util.TypedValue;
 
+//Notifications
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.support.v4.app.NotificationCompat;
 
 public class Timer extends AppCompatActivity {
 
@@ -25,6 +30,9 @@ public class Timer extends AppCompatActivity {
     private int currentHour;
     private int currentMin;
     private int currentSec;
+
+    NotificationCompat.Builder notification;
+    private static int uniqueID = 333;
 
     Handler handler = new Handler(){
         @Override
@@ -169,6 +177,19 @@ public class Timer extends AppCompatActivity {
         rLayout.addView(startBtn, startBtnDetails);
         rLayout.addView(restartBtn, restartBtnDetails);
         setContentView(rLayout);
+
+        //Create Notification
+        notification = new NotificationCompat.Builder(this);
+        notification.setAutoCancel(true);
+
+        notification.setSmallIcon(R.mipmap.ic_launcher);
+        notification.setTicker("Ticker");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentTitle("Timer");
+        notification.setContentText("Time Left:");
+
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(uniqueID,notification.build());
     }
 
     public RelativeLayout.LayoutParams wrapContent(){
@@ -249,5 +270,9 @@ public class Timer extends AppCompatActivity {
             default:
                 return false;
         }
+    }
+
+    public static void updateNotification(String text){
+
     }
 }
